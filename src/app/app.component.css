@@ -1,0 +1,40 @@
+/* app.component.css */
+
+.container {
+    height: calc(100vh - 64px);
+    /* Subtract the height of the toolbar */
+}
+
+mat-sidenav {
+    width: 240px;
+    background-color: #f0f0f0;
+}
+
+/* Custom Styles */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.right-content {
+    display: flex;
+    align-items: center;
+}
+
+.right-content button {
+    margin-left: 8px;
+}
+
+
+.profile-icon-container img {
+    border-radius: 50%;
+}
+
+.page-content {
+    padding: 16px;
+}
+
+mdc-button__label {
+    height: inherit;
+}
