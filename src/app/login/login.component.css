@@ -1,0 +1,14 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Set the height of the container to the viewport height */
+}
+
+.login-card {
+    width: 300px;
+    /* Adjust the width of the card as needed */
+    padding: 16px;
+    text-align: center;
+}

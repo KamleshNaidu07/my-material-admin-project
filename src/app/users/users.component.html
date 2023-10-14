@@ -1,7 +1,7 @@
 <!-- users.component.html -->
 
 <div class="page-content">
-    <h1>Users Page</h1>
+    <h1>Patient Details</h1>
 
     <!-- Show loading state when users array is empty -->
     <!-- <div *ngIf="users.length === 0">
@@ -10,12 +10,16 @@
 
     <!-- Filter Input -->
     <mat-form-field appearance="fill" class="filter-input">
-        <mat-label>Filter Users</mat-label>
+        <mat-label>Filter Patients</mat-label>
         <input matInput (input)="onFilterChange()" [(ngModel)]="searchTerm" />
-        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchTerm" (click)="clearFilter()">
+        <button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchTerm" (click)="clearFilter()">
             <mat-icon>close</mat-icon>
         </button>
     </mat-form-field>
+
+    <!-- Add User Button -->
+    <button mat-raised-button color="primary" (click)="addUser()">Add Patient Details</button>
+
 
     <!-- Table -->
     <mat-table [dataSource]="filteredUsers" class="mat-elevation-z8" *ngIf="filteredUsers.length > 0">

@@ -10,14 +10,42 @@ import Swal from 'sweetalert2';
   styleUrls: ['./edit-user-dialog.component.css']
 })
 export class EditUserDialogComponent implements OnInit {
-  data: User;
-  
+  userForm!: FormGroup; // Declare a FormGroup for your form
+  // data: User;
+  // Define error messages
+  errorMessages = {
+    first_name: [
+      { type: 'required', message: 'First Name is required.' },
+    ],
+    last_name: [
+      { type: 'required', message: 'Last Name is required.' },
+    ],
+    email: [
+      { type: 'required', message: 'Email is required.' },
+      { type: 'email', message: 'Invalid email format.' },
+    ],
+    phone_number: [
+      { type: 'required', message: 'Phone Number is required.' },
+      { type: 'pattern', message: 'Invalid phone number format.' },
+    ],
+  };
+
   constructor(
     private http: HttpClient,
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public userData: User
+    @Inject(MAT_DIALOG_DATA) public userData: User,
+    private formBuilder: FormBuilder
   ) {
-    this.data = {...userData}; // Create a copy of the data to work with
+
+    // Create a FormGroup with form controls and initial values
+    this.userForm = this.formBuilder.group({
+      first_name: [userData.first_name, Validators.required],
+      last_name: [userData.last_name, Validators.required],
+      email: [userData.email, [Validators.required, Validators.email]],
+      phone_number: [userData.phone_number, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]]
+    });
+    // this.data = {...userData}; // Create a copy of the data to work with
+
   }
 
   ngOnInit(): void {
@@ -25,11 +53,13 @@ export class EditUserDialogComponent implements OnInit {
 
   submitEditForm() {
     // Assuming your API endpoint is '/api/patients/:id'
-    const apiUrl = `http://localhost:3000/api/patients/${this.data.id}`;
+    const apiUrl = `http://localhost:3000/api/patients/${this.userData.id}`;
 
-    this.http.put(apiUrl, this.data).subscribe(
+    const updatedUserData = this.userForm.value; // Get the form data
+
+    this.http.put(apiUrl, updatedUserData).subscribe(
       (response) => {
-        console.log('User updated successfully:', response);
+        // console.log('User updated successfully:', response);
         Swal.fire({
           icon: 'success',
           title: 'User Updated',

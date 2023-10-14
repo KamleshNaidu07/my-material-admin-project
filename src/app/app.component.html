@@ -1,49 +1,55 @@
-<mat-toolbar color="primary" class="toolbar">
-  <span class="title">Admin Panel</span>
+<!-- Only display the following content if the user is authenticated -->
+<div *ngIf="authService.isAuthenticatedReturn()">
+  <mat-toolbar color="primary" class="toolbar">
+    <span class="title">Admin Panel</span>
 
-  <div class="right-content">
-    <!-- Notification Icon -->
-    <button mat-icon-button>
-      <span class="notification-icon">
-        <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color">notifications</mat-icon>
-      </span>
-    </button>
-
-    <!-- Profile Dropdown -->
-    <div class="profile-icon-container" [matMenuTriggerFor]="profileMenu">
-      <button mat-button>
-        <img src="https://placehold.it/40x40" alt="Profile Picture">
+    <div class="right-content">
+      <!-- Notification Icon -->
+      <button mat-icon-button>
+        <span class="notification-icon">
+          <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color">notifications</mat-icon>
+        </span>
       </button>
+
+      <!-- Profile Dropdown -->
+      <div class="profile-icon-container" [matMenuTriggerFor]="profileMenu">
+        <button mat-button>
+          <img src="https://placehold.it/40x40" alt="Profile Picture">
+        </button>
+      </div>
+      <mat-menu #profileMenu="matMenu" xPosition="before">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Settings</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
     </div>
-    <mat-menu #profileMenu="matMenu" xPosition="before">
-      <button mat-menu-item>Profile</button>
-      <button mat-menu-item>Settings</button>
-      <button mat-menu-item>Logout</button>
-    </mat-menu>
+  </mat-toolbar>
 
-  </div>
-</mat-toolbar>
+  <mat-sidenav-container class="container">
+    <!-- Side Navigation Menu -->
+    <mat-sidenav #sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/users" routerLinkActive="active-link">
+          <mat-icon>people</mat-icon>
+          <span>Patients</span>
+        </a>
+        <!-- Add more navigation links as needed -->
+      </mat-nav-list>
+    </mat-sidenav>
 
-<mat-sidenav-container class="container">
+    <mat-sidenav-content>
+      <!-- Main content area -->
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
 
-  <!-- Side Navigation Menu -->
-  <mat-sidenav #sidenav mode="side" opened>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
-      </a>
-      <a mat-list-item routerLink="/users" routerLinkActive="active-link">
-        <mat-icon>people</mat-icon>
-        <span>Users</span>
-      </a>
-      <!-- Add more navigation links as needed -->
-    </mat-nav-list>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <!-- Main content area -->
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-
-</mat-sidenav-container>
+<!-- Display this content if the user is not authenticated -->
+<div *ngIf="!authService.isAuthenticatedReturn()">
+  <!-- This can be your login component or any other content you want to show on the login page -->
+  <router-outlet></router-outlet>
+</div>

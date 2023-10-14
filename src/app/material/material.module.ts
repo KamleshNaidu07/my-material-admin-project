@@ -11,7 +11,9 @@ import { MatTableModule } from '@angular/material/table'; // Import MatTableModu
 import { MatPaginatorModule } from '@angular/material/paginator'; // Import MatPaginatorModule
 import { NgxDatatableModule } from '@swimlane/ngx-datatable'; // Import NgxDatatableModule
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatCardModule } from '@angular/material/card'; // Import MatCardModule
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -30,7 +32,10 @@ import { MatButtonModule } from '@angular/material/button';
     MatPaginatorModule,
     NgxDatatableModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialModule { }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { MatDialog } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component'; // Import your dialog component
+import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.component'; // Import your dialog component
 
 
 export interface User {
@@ -49,6 +51,7 @@ export class UsersComponent {
           this.applyFilter();
         } else {
           this.users = []; // Clear the users array if no data
+          this.applyFilter(); // Remove this line if we want to put the last searched data but not matching current searched data
           this.totalUsers = 0; // Reset the total user count
         }
       },
@@ -79,9 +82,10 @@ export class UsersComponent {
         user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         user.phone_number.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        user.first_name.toLowerCase() + user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase()) // For full name filter case
+        user.first_name.toLowerCase() + " " + user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase()) // For full name filter case
     );
   }
+
   async onFilterChange() {
     this.pageIndex = 0; // Reset to the first page when filtering
     this.fetchUsers(); // Call the fetchUsers function with the updated search term
@@ -103,11 +107,35 @@ export class UsersComponent {
     this.fetchUsers();
     this.fetchTotalUsersCount();
   }
-  
+
+  addUser(): void {
+    const dialogRef = this.dialog.open(AddUserDialogComponent, {
+      width: '400px', // You can adjust the width as needed
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // This function will be called when the dialog is closed
+
+      if (result === true) {
+        this.fetchUsers();
+        this.fetchTotalUsersCount();
+      }
+    });
+  }
+
   editUser(user: User): void {
+    const currentDateTime = moment().format();
+    const userToEdit = {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      phone_number: user.phone_number,
+      updated_at: currentDateTime,
+    };
+
     const dialogRef = this.dialog.open(EditUserDialogComponent, {
       width: '400px', // You can adjust the width as needed
-      data: user // Pass the selected user to the dialog
+      data: userToEdit // Pass the selected user to the dialog
     });
 
     dialogRef.afterClosed().subscribe(result => {
